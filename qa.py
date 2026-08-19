@@ -1,3 +1,4 @@
+
 class QAEngine:
 
     def __init__(self, vector_store):
@@ -9,7 +10,7 @@ class QAEngine:
         results = self.vector_store.search(question)
 
         if results:
-            return results[0]
+            return results
 
         else:
             return "没有找到答案"
