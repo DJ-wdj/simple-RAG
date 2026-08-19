@@ -1,33 +1,34 @@
-with open ("data.txt","r",encoding="UTF-8") as f:
-    test=f.read()
+from data_loader import DataLoader
+from vector_store import VectorStore
+from QA import QAEngine
 
 
-documents=test.split("\n")
-print("知识库已加载")
+# 1. 加载数据
+loader = DataLoader("data.txt")
 
-for doc in documents:
-    print(doc)
-
-question = input("\n请输入问题：")
+documents = loader.load()
 
 
-result_if=1
+# 2. 创建知识库
+store = VectorStore()
 
-for doc in documents:
+store.add_documents(documents)
 
-    if "Python" in question and "Python" in doc:
-        print("\n找到答案：")
-        print(doc)
-        result_if=0
 
-    elif "GitHub" in question and "GitHub" in doc:
-        print("\n找到答案：")
-        print(doc)
-        result_if=0
+# 3. 创建问答系统
+qa = QAEngine(store)
 
-    elif "机器学习" in question and "机器学习" in doc:
-        print("\n找到答案：")
-        print(doc)
-        result_if=0
-    
-if result_if==1:print("无结果")
+
+# 4. 用户提问
+while True:
+
+    question = input("\n请输入问题：")
+
+    if question == "退出":
+        break
+
+
+    answer = qa.ask(question)
+
+    print("\n答案：")
+    print(answer)
